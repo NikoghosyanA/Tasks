@@ -1,0 +1,8 @@
+#include "iostream"
+int main() {
+    float r=0,p=0,k,x,y=-1;
+    for (k=1; k<=100; k++) {
+        x=1./k; y*=-1; p+=x; r+=x*y;
+    }
+    std::cout << "a) " << 1000*r << ", b) " << 1000*p << std::endl; return 0;
+}

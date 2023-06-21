@@ -1,0 +1,105 @@
+# include <iostream>
+# include <conio.h>
+using namespace std;
+
+int check(int a[8]) //Проверка троичного числа на ситуацию переполнения
+{
+    for (int i=0; i <= 7; i++)
+        if (a[i] != 2) return 0;
+    return 1;
+}
+
+long work(int a[8])
+{
+    long sum = 0, l = 123456789;
+    int k = 0; // Счетчик количества цифр
+    for (int i=7; i >= 0; i--)
+    {
+        int c1 = 1;
+        k + +;
+        switch(a[i]) // Вычленение слагаемых из L
+        {
+                case 0:
+            {
+                    break;
+            }
+                case 1:
+            {
+                    for (int j=1; j <= k; j++)
+                        c1 *= 10;
+                    sum += (l % c1);
+                    l /= c1;
+                    k = 0;
+                    break;
+            }
+                case 2:
+            {
+                    for (int j=1; j <= k; j++)
+                        c1 *= 10;
+                    sum -= (l % c1);
+                    l /= c1;
+                    k = 0;
+            }
+        }
+    }
+    sum += l; // Прибавление последнего, неучтенного слагаемого
+    return sum;
+}
+
+void output(int a[8]) // Вывод подходящей схемы
+{
+    cout<<1;
+    for (int i=0; i<=7; i++)
+    {
+        switch(a[i])
+        {
+            case 0:
+                {
+                    break;
+                };
+            case 1:
+                {
+                    cout<<'+';
+                    break;
+                }
+            case 2:
+                {
+                    cout<<'-';
+                }
+        }
+        cout<<i+2;
+    }
+}
+
+int main()
+{
+    long m;
+    cout << "Vvedite M ";
+    cin >> m;
+    int a[8];   //Троичное число, представляющее схему расстановки знаков
+    for (int i=0; i<=7; i++)
+    {
+        a[i]=0;
+    }
+    a[7]=-1;
+    do          //Перебор всех вариантов
+    {
+        a[7]++;
+        for (int i=7; i>=0; i--)
+        {
+            if (a[i] == 3)
+            {
+                a[i] = 0;
+                a[i-1]++;
+            }
+        }
+        if (work(a) == m)
+        {
+            output(a);
+            cout<<"\n";
+        }
+    }
+    while (check(a) != 1);
+        system("pause");
+    return 0;
+}

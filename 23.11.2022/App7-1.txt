@@ -1,0 +1,13 @@
+double dist_point_to_ray (point p, point p1, point p2)
+{
+    // проектируем точку на прямую, проходящую по лучу
+    line l = toline (p1, p2);
+    point t = closest_point (l, p);
+
+    // если полученная точка принадлежит лучу, то возвращаем расстояние до прямой
+    if (point_in_ray (t, p1, p2))
+        return dist (p, t);
+
+    // иначе возвращаем расстояние до начала луча
+    return dist (p, p1);
+}

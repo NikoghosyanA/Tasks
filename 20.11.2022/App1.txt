@@ -1,0 +1,236 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iomanip>
+#include <cmath>
+#include <Windows.h>
+
+namespace color
+{
+    void set(WORD text = 7, WORD background = 0)
+    {   SetConsoleTextAttribute(    GetStdHandle(STD_OUTPUT_HANDLE),
+                                    (background << 4) | text      );
+    }
+};
+
+template <typename... TT>
+void BANNER(TT&&... vals)
+{   color::set(10);
+    ((std::cout << vals << std::endl), ...);
+    color::set();
+}
+
+struct Tovar
+{   std::string name;
+    int         cost{0};
+
+    void info()
+    {   std::cout << "    " << std::setw(12) << name
+                  << "  : " << cost << '\n';
+    }
+};
+
+struct Group
+{   std::string name;
+    std::vector<Tovar> t;
+
+    void push_tovar(std::string n, int cost)
+    {   t.push_back(Tovar{n, cost});
+    }
+
+    void info()
+    {   std::cout << "Tovar----------------------: " << name << '\n';
+        size_t cnt = 1;
+        for(auto e : t)
+        {   std::cout << cnt++ << ". ";
+            e.info();
+        }
+        std::cout << '\n';
+    }
+};
+
+struct Cash_register
+{   struct A
+    {   std::string* name_group;
+        Tovar*               pt;
+    };
+
+    std::vector<A> v;
+    void push(std::string* ng, Tovar* t)
+    {   v.push_back(A{ng, t});
+    }
+    void print()
+    {   std::cout << "ЧЕК К ОПЛАТЕ ---------------------------- \n"
+                  << "|                                        |\n";
+        int sum = 0;
+        for(auto& p : v)
+        {   std::cout << std::left
+                      << "|    " << std::setw(14) << *p.name_group
+                      <<  "   "  << std::setw(11) <<  p.pt->name
+                      <<  " : "  << std::setw(5)  <<  p.pt->cost << "|\n";
+            sum += p.pt->cost;
+        }
+        std::cout << " ----------------------------------------\n"
+                  << "|    Сумма   : " << std::setw(26) <<   sum << "|\n"
+                  << "|    Итого   : " << std::setw(26) << sum+n << "|\n"
+                  << " ----------------------------------------\n";
+        v.clear();
+        all_money += sum+n;
+    }
+private:
+    int all_money{0};
+};
+
+struct Magaz
+{   std::vector<Group> v;
+    void info()
+    {   for(auto e : v)
+        {   e.info();
+        }
+    }
+
+    void info_group()
+    {   int cnt = 1;
+        for(auto e : v)
+        {   std::cout << cnt++ << ". " << e.name << '\n';
+        }
+    }
+
+    bool is_good(size_t g)
+    {   if(g < v.size()) return true;
+        std::cout << "Нет такой группы!\n";
+        Sleep(1500);
+        return false;
+    }
+
+    void info_tovar(size_t c)
+    {   v[c].info();
+    }
+
+    void push_group(std::string n)
+    {   v.push_back(Group{n});
+    }
+
+    void push_tovar(std::string g, std::string t, int cost)
+    {   size_t i = find(g);
+        if(i != std::string::npos)
+        {   v[i].push_tovar(t, cost);
+        }
+    }
+
+    Cash_register cash_register;
+    int getcost(size_t g, size_t c)
+    {   if(c < v[g].t.size())
+        {   cash_register.push(&v[g].name, &v[g].t[c]);
+            return v[g].t[c].cost;
+        }
+        else
+        {   std::cout << "Нет такого товара!\n\n";
+            Sleep(1500);
+        }
+        return 0;
+    }
+    void print_check()
+    {   cash_register.print();
+    }
+
+private:
+    size_t find(std::string n)
+    {   for(size_t i = 0; i < v.size(); ++i)
+        {   if(v[i].name == n) return i;
+        }
+        return std::string::npos;
+    }
+};
+
+template<class T>
+void print(short c, T m)
+{   color::set(c);
+    std::cout << m;
+    color::set();
+}
+
+int main()
+{   setlocale(0, "");
+
+    BANNER(
+        "///-------------------------------|",
+        "///         FULL LIST.            |",
+        "///-------------------------------:");
+
+    Magaz m;
+    m.push_group("Мужские носки");
+    m.push_group("Женские трусы");
+    m.push_group("Напитки");
+
+    m.push_tovar("Мужские носки", "Размер 1", 59 );
+    m.push_tovar("Мужские носки", "Размер 2", 119);
+    m.push_tovar("Женские трусы", "Резиновые", 299);
+    m.push_tovar("Женские трусы", "Красные", 343);
+    m.push_tovar("Женские трусы", "Белые", 143);
+    m.push_tovar("Напитки"      , "Ситро", 70 );
+
+    m.info();
+
+    BANNER(
+        "///-------------------------------|",
+        "/// PRESS ENTER FOR GO INTO.      |",
+        "///-------------------------------:");
+    std::cin.get();
+
+    int sum = 0;
+    while(true)
+    {   system("cls");
+
+        BANNER(
+            "///---------------------------|",
+            "/// ALL GROUPS.               |",
+            "///---------------------------:");
+
+        m.info_group();
+        std::cout << "\nSumma: ";
+        print(4, sum);
+        std::cout << '\n';
+
+        size_t g;
+        std::cout << "Input number group(или 0 для оплаты): ";
+        std::cin >> g;
+        std::cin.ignore();
+        if(g-- == 0) break;
+
+        if(m.is_good(g))
+            while(true)
+            {   system("cls");
+                BANNER(
+                    "///-----------------------|",
+                    "/// TOVAR OF SELECT GROUP.|",
+                    "///-----------------------:");
+                m.info_tovar(g);
+                std::cout << "\nSumma: ";
+                print(4, sum);
+                std::cout << '\n';
+                size_t c;
+                std::cout << "Input number tovar(or 0 for exit up): ";
+                std::cin >> c;
+                std::cin.ignore();
+                if(c-- == 0) break;
+                sum += m.getcost(g, c);
+            }
+    }
+
+    system("cls");
+    //std::cout << "ИТОГО ПОЛНАЯ СУММА К ОПЛАТЕ: " << sum << "\n";
+
+    m.print_check();
+
+    if(sum)
+    BANNER(
+        "///--------------------------------------|",
+        "/// Спасибо за покупку - приходите ещё.  |",
+        "///--------------------------------------:");
+    else
+    BANNER(
+        "///--------------------------------------|",
+        "/// Попробуйте взять кредит...           |",
+        "///--------------------------------------:");
+}

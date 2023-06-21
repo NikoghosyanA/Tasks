@@ -1,0 +1,28 @@
+begin
+Pmax := 4;
+Tmin := 1;
+Tmax := 9;
+L := 480;
+M := 15;
+N := 0;
+count := 0;
+
+from ; random; import; random; randint;
+
+for i: integer := range(L) to
+
+P = randint(0.Pmax)do;
+
+T;Tmin;random();(Tmax - Tmin);
+
+R;round(K / T);
+
+N += P - R;
+
+if N < 0 then  N;0:
+
+dT;N;K;T;
+
+if dT > M then   count += 1;
+
+end.

@@ -1,0 +1,169 @@
+#include <iostream>
+
+using namespace std;
+
+
+
+int** create(const int st_num, const int nu_num)
+
+{
+
+	int** stud = new int* [st_num];
+
+	for (int i = 0; i < st_num; i++)
+
+		stud[i] = new int[nu_num];
+
+	return stud;
+
+}
+
+void destr(int** stud, const int st_num)
+
+{
+
+	for (int i = 0; i < st_num; i++)
+
+		delete[] stud[i];
+
+	delete stud;
+
+}
+
+void rand_fill(int** stud, const int st_num, const int nu_num)
+
+{
+
+	srand(time(nullptr));
+
+	for (int i = 0; i < st_num; i++)
+
+		for (int j = 0; j < nu_num; j++)
+
+			stud[i][j] = rand() % 100 + 1;
+
+}
+
+void print(int** stud, const int st_num, const int nu_num)
+
+{
+
+	cout << "Студент\t\tОценки\n";
+
+	for (int i = 0; i < st_num; i++) {
+
+		cout << i + 1 << "\t";
+
+		for (int j = 0; j < nu_num; j++)
+
+			cout << stud[i][j] << "\t";
+
+		cout << "\n";
+
+	}
+
+}
+
+void sort(int buf[3])
+
+{
+
+	buf[0] > min(buf[1], buf[2]) ? swap(buf[0], const_cast<int&>(min(buf[1], buf[2]))) : void();
+
+	buf[1] > buf[2] ? swap(buf[1], buf[2]):void();
+
+}
+
+
+
+int best(int* stud, const int nu_num)
+
+{
+
+	int buffer[3]{stud[0],nu_num>1?stud[1]:0,nu_num>2?stud[2]:0};
+
+	sort(buffer);
+
+	for (int i = 3; i < nu_num; i++)
+
+	{
+
+		if (stud[i] > *buffer) { *buffer = stud[i]; sort(buffer); }
+
+	}
+
+	return buffer[0] + buffer[1] + buffer[2];
+
+}
+
+
+
+/*int worst(int* stud, const int nu_num)
+
+{
+
+	int buffer[3]{ stud[0],nu_num > 1 ? stud[1] : 0,nu_num > 2 ? stud[2] : 0 };
+
+	sort(buffer);
+
+	for (int i = 3; i < nu_num; i++)
+
+	{
+
+		if (stud[i] < buffer[2]) { buffer[2] = stud[i]; sort(buffer); }
+
+	}
+
+	return buffer[0] + buffer[1] + buffer[2];
+
+}*/
+
+
+
+int find(int** stud, const int st_num, const int nu_num, int(*foo)(int*, const int), bool best)
+
+{
+
+	int summ = foo(stud[0], nu_num), temp{}, stnum{};
+
+	for (int i = 1; i < st_num; i++)
+
+		if (best ^ (summ > (temp = foo(stud[i], nu_num)))) {
+
+			summ = temp; stnum = i;
+
+		}
+
+	return stnum;
+
+}
+
+
+
+int main()
+
+{
+
+	setlocale(0, "");
+
+	int** students;
+
+	int M, N;
+
+	cout << "Введите количество студентов и количество оценок\n";
+
+	cin >> M >> N;
+
+	students = create(M, N);
+
+	rand_fill(students, M, N);
+
+	print(students, M, N);
+
+	cout << "Лучший студент: " << ::find(students, M, N, best, true)+1 << "\n";
+
+	cout << "Худший студент: " << ::find(students, M, N, best, false)+1 << "\n";
+
+	destr(students, M);
+
+}

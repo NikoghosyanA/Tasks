@@ -1,0 +1,12 @@
+BigInt count(int k, int n) {
+  ++n;
+  vector<BigInt> counts(n);
+  std::fill(counts.begin(), counts.end(), 0);
+
+  counts[0] = 1;
+  for (int i = 1; i < n; ++i)
+    for (int j = 1; j <= min(k, i); ++j)
+      counts[i] = counts[i] + counts[i - j];
+
+  return counts[n - 1];
+}

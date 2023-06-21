@@ -1,0 +1,4 @@
+#include "iostream"
+int main(){
+long m,n; std::cout<<"m N: "; std::cin>>m>>n; if(n<0)n=-n; bool b=false;
+do if(n%10==m)b=true; while(n/=10); std::cout<<(b?"Yes!\n":"No!\n");}

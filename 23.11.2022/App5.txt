@@ -1,0 +1,62 @@
+#include <iostream>
+using namespace std;
+struct Data {
+    int d;
+    int m;
+    int y;
+private:
+    friend istream& operator>>(istream& inp, Data& data) {
+        return inp >> data.d >> data.m >> data.y;
+    }
+    friend ostream& operator<<(ostream& out, const Data& data) {
+        return out << data.d << ' ' << data.m << ' ' << data.y;
+    }
+};
+class Date {
+public:
+    static bool correct(const Data& data) {
+        if (data.y <= 0) return false;
+        if (data.m < 1 || data.m > 12) return false;
+        if (data.d < 1 || data.d > 31) return false;
+        if (data.m != 2 && data.d <= months[data.m]) return true;
+        if (data.y % 4 != 0) return data.d <= months[2];
+        return data.d - 1 <= months[2];
+    }
+    static Data previous(const Data& data) {
+        Data prev{};
+        if (data.d > 1) {
+            prev.d = data.d - 1;
+            prev.m = data.m;
+            prev.y = data.y;
+        } else if (data.m != 3 && data.m != 1) {
+            prev.d = months[data.m - 1];
+            prev.m = data.m - 1;
+            prev.y = data.y;
+        } else if (data.m == 3) {
+            prev.d = months[2];
+            if (data.y % 4 == 0) ++prev.d;
+            prev.m = data.m - 1;
+            prev.y = data.y;
+        } else if (data.m == 1) {
+            prev.y = data.y - 1;
+            prev.m = 12;
+            prev.d = months[data.m];
+        }
+        return prev;
+    }
+private:
+    inline static const int months[]{
+        0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    };
+};
+int main() {
+    cout << ">>> ";
+    Data data{};
+    cin >> data;
+    if (Date::correct(data)) {
+        auto date = Date::previous(data);
+        cout << "<<< " << date << '\n';
+    } else {
+        puts("<<< incorrect");
+    }
+}

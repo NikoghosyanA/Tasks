@@ -1,0 +1,54 @@
+#include <iostream>   
+using namespace std; 
+int main() { 
+    const size_t n = 0x400; 
+    cout << ">>> "; 
+    char str[n]{}; 
+    cin.getline(str, n); 
+    const char sp = ' '; 
+    size_t i = 0; 
+    while (str[i] && str[i] == sp) ++i; 
+    if (str[i]) { 
+        size_t j = i; 
+        while (str[j] && str[j] != sp) ++j; 
+        size_t k = j; 
+        while (str[k] && str[k] == sp) ++k; 
+        if (j != k && str[k]) { 
+            size_t h = k; 
+            while (str[h] && str[h] != sp) ++h; 
+            while (i < j && k < h) { 
+                const auto t = str[i]; 
+                str[i] = str[k]; 
+                str[k] = t; 
+                ++i; 
+                ++k; 
+            } 
+            if (str[i] == sp) { 
+                while (k < h) { 
+                    str[i] = str[k]; 
+                    ++i; 
+                    size_t g = k - 1; 
+                    while (g && g >= i) { 
+                        str[g + 1] = str[g]; 
+                        --g; 
+                    } 
+                    str[g + 1] = sp; 
+                    ++k; 
+                } 
+            } else { 
+                const auto x = i; 
+                while (i < j) { 
+                    const auto t = str[x]; 
+                    size_t g = x + 1; 
+                    while (g < h) { 
+                        str[g - 1] = str[g]; 
+                        ++g; 
+                    } 
+                    str[g - 1] = t; 
+                    ++i; 
+                } 
+            } 
+        } 
+    } 
+    cout << "<<< " << str; 
+}

@@ -1,0 +1,10 @@
+a = '           Oooo '
+b = '  oooO    (    )'
+c = ' (    )    )   )'
+d = ' (   (    (___/ '
+e = '  \___)         '
+print(a, end='\n')
+print(b, end='\n')
+print(c, end='\n')
+print(d, end='\n')
+print(e, end='\n')

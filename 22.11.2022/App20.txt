@@ -1,0 +1,45 @@
+uses crt;
+const n=5;
+type a=record
+f: string;
+n: string;
+o: string;
+c: byte;
+s: char;
+end;
+var b: array[1..n] of a; i: byte;
+begin
+clrscr;
+writeln('введите исходные данные: ');
+for i:=1 to n do
+begin
+write('введите фамилию ',i,'-ого ученика: ');
+readln(b[i].f);
+write('его имя: ');
+readln(b[i].n);
+write('отчество: ');
+readln(b[i].o);
+write('класс: ');
+readln(b[i].c);
+write('пол: ');
+readln(b[i].s);
+end;
+writeln('ввод закончен нажмите любую клавишу...');
+readkey;
+clrscr;
+writeln('                                        результат:',^j);
+writeln('   фамилия            имя           отчество            класс           пол');
+for i:=1 to n do
+begin
+gotoxy(4,i+4);
+write(b[i].f);
+gotoxy(22,i+4);
+write(b[i].n);
+gotoxy(36,i+4);
+write(b[i].o);
+gotoxy(59,i+4);
+write(b[i].c);
+gotoxy(74,i+4);
+write(b[i].s);
+end;
+end.

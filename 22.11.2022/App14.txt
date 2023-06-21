@@ -1,0 +1,30 @@
+# include <iostream>
+# include <cmath>
+int
+main()
+{
+    int32_t
+i(1), j(3);
+double
+res(0);
+
+double
+op = 3.0 / 4.0, eps;
+std::cout << "eps:";
+std::cin >> eps;
+std::cout << std::endl;
+
+while (1)
+    {
+        double
+    new_frac = (double)
+    1 / (i * j);
+    i + +, j + +;
+    res = fma(1, res, new_frac);
+    std::cout << "сумма : " << res << " ошибка : " << res - op << std::endl;
+    if (op - res < eps)
+        break;
+    }
+    std::cout << std::endl << res << " ";
+    return 0;
+}
