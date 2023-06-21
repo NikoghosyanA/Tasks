@@ -1,0 +1,11 @@
+var N,H,i,b,max,u,min,min1:longint;
+m:array[1..100000] of longint;
+k:array[1..100000] of longint;
+begin
+u:=0;
+readln(n);
+for i:=1 to n do
+begin
+read(m[i]); read(k[i]);  end;
+readln(H);
+end.

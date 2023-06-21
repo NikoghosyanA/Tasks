@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    size_t n, m;
+    cin >> n >> m;
+    vector<short> an(n);
+    vector<short> am(m);
+    for (auto& x : an) cin >> x;
+    for (auto& x : am) cin >> x;
+    if (an == am) puts("EQUAL");
+    else {
+        auto in = an.begin();
+        auto im = am.begin();
+        while (in != an.end() || im != am.end()) {
+            if (in == an.end()) {
+                cout << '-' << *im << '\n';
+                ++im;
+            } else if (im == am.end()) {
+                cout << '+' << *in << '\n';
+                ++in;
+            } else {
+                const auto a = *in;
+                const auto b = *im;
+                if (a < b) {
+                    cout << '+' << a << '\n';
+                    ++in;
+                } else if (b < a) {
+                    cout << '-' << b << '\n';
+                    ++im;
+                } else {
+                    ++in;
+                    ++im;
+                }
+            }
+        }
+    }
+}

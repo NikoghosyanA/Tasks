@@ -1,0 +1,19 @@
+var
+  x1, y1, x2, y2, x, y: shortint;
+  nw, ne, sw, se: real;
+
+begin
+  readln(x1, y1, x2, y2, x, y);
+  sw := sqrt(sqr(x - x1) + sqr(y - y1));
+  ne := sqrt(sqr(x - x2) + sqr(y - y2));
+  nw := sqrt(sqr(x - x1) + sqr(y - y2));
+  se := sqrt(sqr(x - x2) + sqr(y - y1));
+  if (nw = ne) and (nw < sw) then write('N');
+  if (sw = se) and (sw < ne) then write('S');
+  if (se = ne) and (se < sw) then write('E');
+  if (nw = sw) and (sw < se) then write('W');
+  if (nw < ne) and (nw < sw) and (nw < se) then write('NW');
+  if (ne < nw) and (ne < sw) and (ne < se) then write('NE');
+  if (sw < ne) and (sw < nw) and (sw < se) then write('SW');
+  if (se < ne) and (se < sw) and (se < nw) then write('SE');
+end.

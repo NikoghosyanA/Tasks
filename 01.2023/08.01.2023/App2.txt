@@ -1,0 +1,39 @@
+uses crt;
+const max=100;
+type mas=array[1..max] of real;
+procedure prz(a:mas;k,m:integer;var p:real);
+var i:integer;
+begin
+p:=1;
+for i:=k to k+m-1 do
+p:=p*a[i];
+end;
+var m,n,k,q,i:integer;
+    x,y:mas;
+begin
+clrscr;
+randomize;
+repeat
+writeln('Введите m,n m*n<=',max);
+readln(m,n);
+until m*n in [1..max];
+writeln('Последовательность Х');
+for i:=1 to m*n do
+ begin
+  x[i]:=1+5*random;
+  write(x[i]:5:2);
+ end;
+writeln;
+k:=1;
+q:=0;
+for i:=1 to n do
+ begin
+  prz(x,k,m,y[q+1]);
+  k:=k+m;
+  q:=q+1;
+ end;
+writeln('Последовательность произведений по ',m,' чисел');
+for i:=1 to q do
+write(y[i]:10:2);
+readln
+end.
