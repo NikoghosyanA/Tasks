@@ -1,0 +1,4 @@
+#include <stdio.h>
+int main(){
+int e1,e2,p1,p2; scanf("%d%d%d%d",&e1,&e2,&p1,&p2);
+printf("%s\n",e1>p1&&e2>p2||e1>p2&&e2>p1?"YES":"NO"); return 0;}

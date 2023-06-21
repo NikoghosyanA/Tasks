@@ -1,0 +1,99 @@
+#include "stdafx.h"
+#include "locale.h"//для русского языка
+#include "string.h"
+#include "stdlib.h"
+ 
+struct note
+{
+    char fam[40];//Фамилия
+    char name[40];//имя
+    int nomer;//Номер телефона
+    int date;//Дата рождения
+};
+ 
+struct note NOTE[100];
+struct note temp;//для сортировки
+int records=0;
+int i=0,j;
+int menu();
+void vvod();//Ввод
+void vivod();//Вывод
+void sort();//записи должны быть упорядочены по датам рождения;  Т.е. сортировка по дате рождения
+ 
+int main()
+{
+    setlocale(LC_ALL,".1251");//для русского языка
+    while(1)
+    {
+        switch(menu())
+        {
+        case 1:vvod();break;
+        case 2:vivod();break;
+        case 3:sort();break;
+        case 4:return 0;break;
+            default:printf("Не верно выбрано значение\n");
+        }
+    }
+    return 0;
+}
+ 
+int menu()
+{
+    int ch;
+    printf("\nМеню:\n");
+    printf("1.Ввод структуры\n");
+    printf("2.Вывод структуры\n");
+    printf("3.Сортировка по дате рождения\n");
+    printf("4.Выход\n");
+    printf("Ваш выбор? - ");
+    scanf("%d",&ch);
+    return ch;
+}
+ 
+void vvod()
+{
+    int i;
+    do {
+        printf("Запись №%d:\n", records+1);
+        printf("Введите фамилию\n");
+        fflush(stdin);
+        gets(NOTE[records].fam);
+        printf("Введите имя\n");
+        fflush(stdin);
+        gets(NOTE[records].name);
+        printf("Введите номер телефона\n");
+        scanf("%d",&NOTE[records].nomer);
+        printf("Введите дату рождения\n");
+        scanf("%d",&NOTE[records].date);
+        records++;
+        printf("Прекратить работу? 1-нет,0-да\n");
+        scanf("%d",&i);
+    }while(i);
+    
+}
+ 
+void vivod()
+{
+    if(records==0)
+        printf("Нет записей\n");
+    else
+        for(i=0;i<records;i++)
+        {
+    
+        printf("Фамилия : %s",NOTE[i].fam);
+        printf("Имя : %s",NOTE[i].name);
+        printf("Номер : %d",NOTE[i].nomer);
+        printf("Дата рождения : %d\n",NOTE[i].date);
+    }
+}
+ 
+void sort()
+{
+for (i=0; i<records-1; i++)
+        for (j=i; j<records; j++)
+            if (NOTE[i].date>NOTE[j].date)//По возростанию
+            { temp=NOTE[i];
+               NOTE[i]=NOTE[j];
+               NOTE[j]=temp;
+            }
+}

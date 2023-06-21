@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+
+#include <locale.h>
+
+std::vector<int> all_primes;
+
+bool prime_check(int n) {
+	unsigned int i = 0;
+	while (all_primes[i] * all_primes[i] <= n && i < all_primes.size()) {
+		if (n % all_primes[i] == 0) {
+			return false;
+		}
+		i++;
+	}
+	return true;
+}
+
+void gen_primes(int n) {
+	all_primes.push_back(2);
+	int k = 3;
+	while (k <= n) {
+		if (prime_check(k)) {
+			all_primes.push_back(k);
+		}
+		k++;
+	}
+}
+
+void print_vector(std::vector<int> v) {
+	std::cout << "{ ";
+	for (unsigned i = 0; i < v.size(); i++) {
+		std::cout << v[i];
+		if (i != v.size() - 1) {
+			std::cout << ", ";
+		}
+	}
+	std::cout << " }" << std::endl;
+}
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	int amin, amax, prime;
+	std::wcout << L"Введите первое число диапазона: ";
+	std::cin >> amin;
+	std::wcout << L"Введите последнее число диапазона: ";
+	std::cin >> amax;
+	std::wcout << L"Введите простое число: ";
+	std::cin >> prime;
+	std::vector<int> primes;
+	std::vector<int> composites;
+	std::vector<int> composites_prime;
+	gen_primes(amin);
+	//print_vector(all_primes);
+	int a = amin;
+	while (a <= amax) {
+		if (prime_check(a)) {
+			all_primes.push_back(a);
+			primes.push_back(a);
+		}
+		else {
+			composites.push_back(a);
+		}
+		if (a % prime == 0) {
+			composites_prime.push_back(a);
+		}
+		a++;
+	}
+	std::wcout << L"Простые числа диапазона:" << std::endl;
+	print_vector(primes);
+	std::wcout << L"Составные числа диапазона:" << std::endl;
+	print_vector(composites);
+	std::wcout << L"Числа диапазона, которые делятся на данное простое:" << std::endl;
+	print_vector(composites_prime);
+	return 0;
+}
