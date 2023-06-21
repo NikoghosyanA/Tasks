@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+unsigned long long sum(unsigned a, unsigned b, unsigned n) {
+if (n == 2) return a + b;
+auto d = b - a;
+unsigned long long s = a + b;
+for (auto i = 3U; i <= n; ++i) {
+b += d;
+s += b;
+}
+return s;
+}
+int main() {
+unsigned n, m;
+cin >> n >> m;
+unsigned a, b;
+auto s = 0ULL;
+for (auto i = 0U; i < m; ++i) {
+cin >> a >> b;
+s += sum(a, b, n);
+}
+cout << s << '\n';
+}

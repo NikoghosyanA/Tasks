@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+int main()
+{
+    srand(time(NULL));
+    setlocale(LC_ALL, "Rus"); // Команда для вывода на русском языке
+    int M, Consonant, number;
+    char stroka[5];
+    printf("Создаем квадратную матрицу размера M*M, где M является числом из целочисленного диапазона [2,5]\n");
+    char line[2];
+    fail:
+    printf("Введите кол-во строк и столбцов:  ");
+    scanf("%s", line);
+    if(line[0] > 49 && line[0] < 54 && line[1] == '\0')
+    {
+        M = line[0] - 48;
+    }
+    else
+    {
+        printf("Вы ввели число не из заданного целочисленного диапазона [2;5]\nПопробуйте еще раз!\n");
+        goto fail;
+    }
+    int itog[M*M];
+    char k[2];
+    printf("\nВыберите вариант действий:\n1. Заполнить матрицу самостоятельно.\n2. Заполнить матрицу случайными словами.\n");
+    fail_2:
+    printf("Введите цифру выбранного вами варианта: ");
+    scanf("%s",k);
+    if(k[0] > 48 && k[0] < 51 && k[1] == '\0')
+    {
+        k[0] = k[0] - 48;
+    }
+    else{
+        printf("Вы ввели номер несуществующего варианта!\nПопробуйте еще раз!\n");
+         goto fail_2;
+    }
+    if(k[0] == 1)
+    {
+        printf("\nЗаполните матрицу M 4-ех буквенными словами на английском языке!\n");
+        printf("Введите последовательно построчно %d элементов матрицы!\n", M*M);
+        for (int i = 0; i < M*M; i++)
+        {
+            printf("Введите %d элемент матрицы!\n", i + 1);
+            Consonant = 0;
+            fail_1:
+            scanf("%s", stroka);
+                if(stroka[4] == '\0'  && stroka[3] != '\0')
+                {
+                    for (int x = 0; x < 4; x++)
+                    {
+                        if((stroka[x] < 65 || stroka[x] > 122 || (stroka[x] > 90 && stroka[x] < 97)) && x < 4)
+                        {
+                            printf("Вы ввели недопустимые символы!\nПопробуйте еще раз!\n");
+                            //return 0;
+                            goto fail_1;
+                        }
+                        if ((stroka[x] != 'a') && (stroka[x] != 'e') && (stroka[x] != 'i') &&
+                        (stroka[x] != 'o') && (stroka[x] != 'u') && (stroka[x] != 'A') &&
+                        (stroka[x] != 'E') && (stroka[x] != 'I') && (stroka[x] != 'O') &&
+                        (stroka[x] != 'U'))
+                        {
+                            Consonant++;
+                        }
+                    }
+                     itog[i] = Consonant;
+                }
+                else
+                {
+                    printf("Вы ввели не 4-ех буквенное слово!\nПопробуйте еще раз!\n");
+                    goto fail_1;
+                }
+
+        }
+        printf("\nВывод последовательно %d элементов массива,\nкаждый элемент означает кол-во согласных букв в соответсвующих словах квадратной матрицы!\n", M*M);
+        for(int i = 0; i < M*M; i++)
+            printf("%d ", itog[i]);
+    }
+
+    if(k[0] == 2)//рандом
+    {
+        char matrix[M][M][4];
+        for (int i = 0; i < M; i++)
+            for (int j = 0; j < M; j++)
+                for (int x = 0; x < 4; x++)
+                do{
+                    matrix[i][j][x] = 65 + rand() % 58;
+                }while(matrix[i][j][x] > 90 && matrix[i][j][x] < 97);
+
+        printf("\nСлучайно сгенерированная матрица M: \n");
+        for (int i = 0; i < M; i++){
+            for (int j = 0; j < M; j++){
+                for (int x = 0; x < 4; x++)
+                    printf("%c", matrix[i][j][x]);
+                printf("\t");
+            }
+            printf("\n");
+        }
+        number = 0;
+        for(int i = 0; i < M; i++)
+        {
+           for(int j = 0; j < M; j++)
+            {
+                Consonant = 0;
+                for(int z = 0; z < 4; z++)
+                {
+                    if ((matrix[i][j][z] != 'a') && (matrix[i][j][z] != 'e') && (matrix[i][j][z] != 'i') &&
+                    (matrix[i][j][z] != 'o') && (matrix[i][j][z] != 'u') && (matrix[i][j][z] != 'A') &&
+                    (matrix[i][j][z] != 'E') && (matrix[i][j][z] != 'I') && (matrix[i][j][z] != 'O') &&
+                    (matrix[i][j][z] != 'U'))
+                    {
+                        Consonant++;
+                    }
+                }
+                itog[number] = Consonant;
+                number++;
+            }
+        }
+        printf("\nВывод последовательно %d элементов массива,\nкаждый элемент означает кол-во согласных букв в соответсвующих словах квадратной матрицы!\n", M*M);
+        for(int i = 0; i < M*M; i++)
+            printf("%d ", itog[i]);
+    }
+    for(int i = 0; i < M*M-1; i++) //сортируем по убывания числа
+        for(int j =  M*M-1; j > i; j--)
+            if(itog[j - 1] < itog[j])
+            {
+                int c = itog[j - 1];
+                itog[j - 1] = itog[j];
+                itog[j] = c;
+            }
+    printf("\n\nВывод массива упорядоченного по убыванию: \n");
+    for(int i = 0; i < M*M; i++)
+            printf("%d ", itog[i]);
+    return 0;
+}
