@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Time {
+public:
+Time() : ss(0), d(0), h(0), m(0), s(0) {}
+void seconds(int ss) {
+this->ss = ss;
+while (ss >= c) {
+++d;
+ss -= c;
+}
+while (ss >= b) {
+++h;
+ss -= b;
+}
+while (ss >= a) {
+++m;
+ss -= a;
+}
+s = ss;
+}
+string datatime()const {
+return to_string(d) + " дн. "
++ to_string(h) + " ч. "
++ to_string(m) + " мин. "
++ to_string(s) + " сек.";
+}
+static string diffirence(const Time& a, const Time& b) {
+auto dss = abs(a.ss - b.ss);
+Time tmp;
+tmp.seconds(dss);
+return tmp.datatime();
+}
+private:
+int ss;
+int d;
+int h;
+int m;
+int s;
+static const int a = 60;
+static const int b = 3600;
+static const int c = 86400;
+};
+int main() {
+system("chcp 1251 > nul");
+Time a;
+a.seconds(128800);
+cout << a.datatime() << '\n';
+Time b;
+b.seconds(213564);
+cout << b.datatime() << '\n';
+auto dt = Time::diffirence(a, b);
+cout << dt << '\n';
+system("pause > nul");
+}

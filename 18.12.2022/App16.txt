@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+#define ll long long
+
+int main()
+{
+    ll n,k;
+    cin >> n >> k;
+
+    vector<ll>v(n);
+    for(ll i = 0;i<n;++i)cin >> v[i];
+
+    ll j(0),sum(0),mi(1e15);
+
+    ll first,second;
+
+    for(ll i = 0;i<n;++i){
+
+        while(sum < k){
+            if(j == n)break;
+            sum += v[j];
+            ++j;
+        }
+
+        if(sum == k){
+            if(mi > (j-1)-i+1){
+                mi = (j-1)-i+1;
+                first = i;
+                second = j-1;
+            }
+        }
+        sum -= v[i];
+
+    }
+
+    if(mi == 1e15)cout << -1;
+    else cout << first+1 << ' ' << second+1;
+
+
+    return 0;
+}

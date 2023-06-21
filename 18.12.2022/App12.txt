@@ -1,0 +1,24 @@
+program xxx;
+var f1,f2:Text;
+a,sa:array[1..10]of byte;
+i,cs:integer;
+sr:real;
+begin
+assign(f1,'input.txt');
+assign(f2,'output.txt');
+reset(f1); for i:=1 to 10 do
+read(f1,a);
+close(f1);
+for i:=1 to 10 do
+sr:=sr+a;
+sr:=sr/2;
+for i:=1 to 10 do
+if a>sr then begin
+cs:=cs+1;
+sa[cs]:=a;
+end;
+rewrite(f2);
+for i:=cs downto 1 do
+write(f2,sa:4);
+close(f2);
+end.

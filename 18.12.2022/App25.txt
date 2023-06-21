@@ -1,0 +1,118 @@
+type
+  TClassmate = record
+    LastName: string;
+    FirstName: string;
+    PhoneNumber: string;
+    Hobby: string;
+  end;
+
+var
+  Classmates: array[1..100] of TClassmate;
+  NumClassmates: integer;
+
+procedure EnterClassmate(var Classmate: TClassmate);
+begin
+  write('Enter last name: ');
+  readln(Classmate.LastName);
+
+  write('Enter first name: ');
+  readln(Classmate.FirstName);
+
+  write('Enter phone number: ');
+  readln(Classmate.PhoneNumber);
+
+  write('Enter hobby: ');
+  readln(Classmate.Hobby);
+end;
+
+function FindClassmate(LastName: string): integer;
+var
+  i: integer;
+begin
+  Result := 0;
+  for i := 1 to NumClassmates do
+  begin
+    if Classmates[i].LastName = LastName then
+    begin
+      Result := i;
+      Break;
+    end;
+  end;
+end;
+
+procedure CountNoHobby;
+var
+  i: integer;
+  NoHobbyCount: integer;
+begin
+  NoHobbyCount := 0;
+  for i := 1 to NumClassmates do
+  begin
+    if Classmates[i].Hobby = '' then
+    begin
+      Inc(NoHobbyCount);
+    end;
+  end;
+  writeln('Number of classmates with no hobby: ', NoHobbyCount);
+end;
+
+procedure DisplayClassmates;
+var
+  i: integer;
+begin
+  writeln('Telephone directory:');
+  for i := 1 to NumClassmates do
+  begin
+    writeln('  ', Classmates[i].LastName, ', ', Classmates[i].FirstName, ': ', Classmates[i].PhoneNumber, ' (', Classmates[i].Hobby, ')');
+  end;
+end;
+
+procedure SortByPhone;
+var
+  i, j: integer;
+  Temp: TClassmate;
+begin
+  for i := 1 to NumClassmates - 1 do
+  begin
+    for j := i + 1 to NumClassmates do
+    begin
+      if Classmates[i].PhoneNumber > Classmates[j].PhoneNumber then
+      begin
+        Temp := Classmates[i];
+        Classmates[i] := Classmates[j];
+        Classmates[j] := Temp;
+      end;
+    end;
+  end;
+end;
+
+begin
+  NumClassmates := 0;
+  var input: char := 'Y';
+  while (UpCase(input) <> 'N') do
+  begin
+    Inc(NumClassmates);
+    EnterClassmate(Classmates[NumClassmates]);
+    write('Enter another classmate? (Y/N) ');
+    readln(input);
+    input := UpCase(input);
+  end;
+  writeln;
+
+  write('Enter last name to search: ');
+  var LastName: string := readlnstring();
+  var i: integer := FindClassmate(LastName);
+  if i > 0 then
+  begin
+    writeln('Phone number for ', LastName, ': ', Classmates[i].PhoneNumber);
+  end
+  else
+  begin
+    writeln('Classmate not found');
+  end;
+
+  CountNoHobby;
+
+  SortByPhone;
+  DisplayClassmates;
+end.

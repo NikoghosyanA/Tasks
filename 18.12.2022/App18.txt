@@ -1,0 +1,18 @@
+text = input()
+alphabetical = [letter if (97 <= ord(letter) <= 122)
+                        or (65 <= ord(letter) <= 90) else ' '
+                         for letter in text]
+tmp = ''.join(alphabetical).split()
+if tmp:
+    k = max(map(len, tmp))
+    letters = []
+    for letter in text:
+        if 97 <= ord(letter.lower()) <= 122:
+            alph_index = (ord("A") if letter.istitle()
+                                 else ord("a"))
+            letters.append(chr((ord(letter)
+             - alph_index + k) % 26 + alph_index))
+        else:
+            letters.append(letter)
+    text = "".join(letters)
+print(text)

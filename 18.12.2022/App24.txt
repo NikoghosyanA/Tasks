@@ -1,0 +1,43 @@
+#include <fstream>
+#include <iterator>
+
+
+using namespace std;
+
+void exchange(const string& f1, const string& f2){
+    typedef istream_iterator<double> iiter;
+    typedef ostream_iterator<double> oiter;
+
+    fstream file1(f1.c_str()); if(file1) cout<<"OK";
+    fstream file2(f2.c_str()); if(file2) cout<<"OK";
+    fstream temp("h.txt", ios_base::in | ios_base::out | ios_base::trunc); if(temp) cout<<"OK";
+
+    copy(iiter(file1), iiter(), oiter(temp," "));
+
+    file1.close();
+    file1.clear();
+    file1.open(f1.c_str(), ios_base::in | ios_base::out | ios_base::trunc);
+    temp.seekg(ios_base::beg);
+
+    copy(iiter(file2), iiter(), oiter(file1," "));
+    file2.close();
+    file2.clear();
+    file2.open(f2.c_str(), ios_base::in | ios_base::out | ios_base::trunc);
+
+    copy(iiter(temp), iiter(), oiter(file2," "));
+}
+
+
+int main(){
+    string  f1("f1.txt"),
+            f2("f2.txt"),
+            f3("f3.txt"),
+            f4("f4.txt"),
+            f5("f5.txt");
+    exchange(f1, f3);
+    exchange(f2, f4);
+    exchange(f3, f5);
+    exchange(f4, f2);
+    exchange(f5, f1);
+    return 0;
+}

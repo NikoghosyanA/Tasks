@@ -1,0 +1,61 @@
+const n=10;//кол.точек
+      p=0.0001;//точность сравнения длин
+type Point=record //тип - точка
+           x,y:real;
+           end;
+function Dlina(a,b:Point):real;
+begin
+Dlina:=sqrt(sqr(a.x-b.x)+sqr(a.y-b.y));
+end;
+var t:array[1..n] of Point;//массив точек
+    d:array[1..6] of real;//массив длин сторон и диагоналей
+    i,j,k,l,ii,jj,imx,jmx,kmx,lmx:byte;
+    x,s,mx:real;
+    f:text;
+begin
+assign(f,'ms.in');
+reset(f);
+for i:=1 to n do
+read(f,t[i].x,t[i].y);
+close(f);
+mx:=0;
+for i:=1 to n-3 do
+for j:=i+1 to n-2 do
+for k:=j+1 to n-1 do
+for l:=k+1 to n do
+ begin //длины сторон и диагоналей в массив
+  d[1]:=Dlina(t[i],t[j]);
+  d[2]:=Dlina(t[i],t[k]);
+  d[3]:=Dlina(t[i],t[l]);
+  d[4]:=Dlina(t[j],t[k]);
+  d[5]:=Dlina(t[j],t[l]);
+  d[6]:=Dlina(t[k],t[l]);
+  for ii:=1 to 5 do //сортируем по возрастанию
+  for jj:=ii+1 to 6 do
+  if d[ii]>d[jj] then
+   begin
+    x:=d[ii];
+    d[ii]:=d[jj];
+    d[jj]:=x;
+   end;
+ //если первые 4 равны и последние 2 равны и они больше первых
+  if (abs(d[1]-d[2])<p)and(abs(d[2]-d[3])<p)and(abs(d[3]-d[4])<p)
+  and(abs(d[5]-d[6])<p)and(d[5]>d[1]) then
+    begin
+     s:=sqr(d[1]);//периметр
+     if s>mx then
+      begin
+       imx:=i;
+       jmx:=j;
+       kmx:=k;
+       lmx:=l;
+       mx:=s;
+      end;
+   end;
+ end;
+assign(f,'ms.out');
+rewrite(f);
+if mx=0 then write(f,-1)
+else write(f,mx:0:2);
+close(f);
+end.

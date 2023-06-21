@@ -1,0 +1,32 @@
+program xxx;
+var f1,f2:text;
+ch,c,i,ii,nc:integer;
+sh:string;
+begin
+assign(f1,'input.txt');
+assign(f2,'output.txt');
+reset(f1);
+readln(f1,ch);
+close(f1);
+case ch of
+1:ch:=9;
+2:ch:=99;
+3:ch:=999;
+4:ch:=9999;
+5:ch:=99999;
+end;
+rewrite(f2);
+for i:=ch downto 1 do
+begin
+str(sh,ch);
+for ii:=1 to length(sh) do
+c:=c*sh;
+if ch mod c=0 then
+begin
+writeln(f2,ch);
+nc:=nc+1;
+if nc=5 then break;
+end;
+end;
+close(f2);
+end.

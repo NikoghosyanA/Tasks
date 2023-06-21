@@ -1,0 +1,57 @@
+program DecryptString;
+
+function FindShortestWord(InputString:string):byte;
+var i,ShortestWordLength, TempLength:byte;
+begin
+ShortestWordLength:=200;
+TempLength:=0;
+for i:=1 to length(InputString)-1 do
+begin
+if (InputString[ i ] in [ 'A'..'z' ]) then
+begin
+inc(TempLength);
+if not(InputString[ i+1 ] in [ 'A'..'z' ]) then
+begin
+if (TempLength <= ShortestWordLength) and (TempLength>0)
+then ShortestWordLength := TempLength;
+TempLength:=0;
+end;
+end;
+end;
+FindShortestWord := ShortestWordLength;
+end;
+
+function DecryptString(InputString:string; offset:byte):string;
+var i,CodeOfLetter:byte;
+tempStr:string;
+
+begin
+tempStr:=InputString;
+for i:=1 to length(tempStr) do
+begin
+CodeOfLetter := Ord(tempStr[ i ]);
+if (CodeOfLetter in [ 65..90 ]) then
+
+if (CodeOfLetter - offset) < 65
+then tempStr[ i ] := Chr(CodeOfLetter - offset - 64 + 90)
+else tempStr[ i ] := Chr(CodeOfLetter - offset);
+
+if (CodeOfLetter in [ 97..122 ]) then
+
+if (CodeOfLetter - offset) < 97
+then tempStr[ i ] := Chr(CodeOfLetter - offset - 96 + 122)
+else tempStr[ i ] := Chr(CodeOfLetter - offset);
+
+end;
+DecryptString := tempStr;
+end;
+
+var s:string;
+
+begin
+
+s:='Jgnnq yqtnf! Vjku oguucig ku xgta ugetgv.';
+writeln(DecryptString(s,FindShortestWord(s)));
+readln;
+
+end.
